@@ -7,27 +7,12 @@ namespace LudoGame
 {
     class Program
     {
-        static List<Player> players;
+        static Dictionary<Piece, int> piecePosition;
 
         static void Main(string[] args)
         {
-            players = new List<Player>();
-            StartGame();
-        }
-
-        static void StartGame()
-        { 
-
-        }
-
-        static void GameSetup()
-        {
-            Console.WriteLine("Välkommen till PäronLudo!");
-            Console.WriteLine("Hur många spelare skall spela? (2-4)");
-            int numberOfPlayers = int.Parse(Console.ReadLine());
-
             // Lista med valbara färger.
-            var playerColors = new List<ConsoleColor>
+            var pieceColors = new List<ConsoleColor>
             {
                 ConsoleColor.Red,
                 ConsoleColor.Blue,
@@ -35,41 +20,29 @@ namespace LudoGame
                 ConsoleColor.Green
             };
 
+            Console.WriteLine("Välkommen till PäronLudo!");
+            Console.WriteLine("Hur många spelare skall spela? (2-4)");
+            int numberOfPlayers = int.Parse(Console.ReadLine());
+            var pieces = new Dictionary<Piece, int>();
+
             for (int i = 0; i < numberOfPlayers; i++)
             {
-                Console.WriteLine("Spelare " + (i + 1) + "välj färg");
-                for (int j = 0; j < playerColors.Count; j++)
+                // Skriv ut lista på valbara färger.
+                for (int j = 0; j < pieceColors.Count; j++)
                 {
-                    Console.WriteLine($"[{j + 1}]: " + playerColors[j]);
+                    Console.WriteLine($"[{j + 1}]: " + pieceColors[j]);
                 }
-                Console.WriteLine();
-                //players.Add(new Player(...));
+                // Val av färg.
+                Console.Write("Välj färg att spela med: ");
+                var index = int.Parse(Console.ReadLine());
+                ConsoleColor color = pieceColors[index - 1];
+                pieceColors.RemoveAt(index - 1);
+                // Lägger till 4 pjäser per färg
+                for (int k = 0; k < 4; k++)
+                {
+                    pieces.Add(new Piece(color, k + 1), 0);
+                }
             }
-
-        }
-        
-        class Player
-        {
-            private List<Piece> pieces = new List<Piece>(4);
-
-            public Player(ConsoleColor pieceColor)
-            {
-                // Loop 4 gånger
-                pieces.Add(new Piece(pieceColor));
-            }
-
-        }
-
-        class Piece
-        {
-            private int Number;
-            private ConsoleColor color;
-
-            public Piece(ConsoleColor color)
-            {
-                this.color = color;
-            }
-        }
-        
+        }        
     }
 }
