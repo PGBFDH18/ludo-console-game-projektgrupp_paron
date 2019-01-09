@@ -2,7 +2,10 @@
 
 namespace GameEngine
 {
-    public class Class1
+    public class Board
     {
+        //Color color = Color.Blue;
+        // HEj
+        
     }
 }
