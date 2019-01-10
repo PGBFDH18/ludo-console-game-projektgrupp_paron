@@ -20,6 +20,9 @@ namespace LudoGame
                 ConsoleColor.Green
             };
 
+            var startPosition = new List<int> { 1, 11, 21, 31 };
+
+            // 
             Console.WriteLine("Välkommen till PäronLudo!");
             Console.WriteLine("Hur många spelare skall spela? (2-4)");
             int numberOfPlayers = int.Parse(Console.ReadLine());
@@ -35,12 +38,14 @@ namespace LudoGame
                 // Val av färg.
                 Console.Write("Välj färg att spela med: ");
                 var index = int.Parse(Console.ReadLine());
-                ConsoleColor color = pieceColors[index - 1];
-                pieceColors.RemoveAt(index - 1);
-                // Lägger till 4 pjäser per färg
-                for (int k = 0; k < 4; k++)
+
+                // Tilldela startpostitioner till pjäser.                
+                // Lägger till 4 pjäser per färg.
+                for (int m = 1, k = 0; m < 42; m += 10, k++)
                 {
-                    pieces.Add(new Piece(color, k + 1), 0);
+                    ConsoleColor color = pieceColors[k];
+                    pieceColors.RemoveAt(k);
+                    pieces.Add(new Piece(color, k, m), 0);
                 }
             }
         }        
