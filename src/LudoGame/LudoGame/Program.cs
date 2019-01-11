@@ -7,47 +7,66 @@ namespace LudoGame
 {
     class Program
     {
-        static Dictionary<Piece, int> piecePosition;
-
         static void Main(string[] args)
         {
+            //game.players[x].pieces[x].Move();
+
+
             // Lista med valbara färger.
-            var pieceColors = new List<ConsoleColor>
+            var pieceColors = new List<PieceColor>
             {
-                ConsoleColor.Red,
-                ConsoleColor.Blue,
-                ConsoleColor.Yellow,
-                ConsoleColor.Green
+                PieceColor.Red,
+                PieceColor.Blue,
+                PieceColor.Yellow,
+                PieceColor.Green
             };
 
-            var startPosition = new List<int> { 1, 11, 21, 31 };
-
-            // 
+            // Game setup.
             Console.WriteLine("Välkommen till PäronLudo!");
             Console.WriteLine("Hur många spelare skall spela? (2-4)");
             int numberOfPlayers = int.Parse(Console.ReadLine());
-            var pieces = new Dictionary<Piece, int>();
+            List<Player> players = new List<Player>(4);
 
             for (int i = 0; i < numberOfPlayers; i++)
             {
-                // Skriv ut lista på valbara färger.
+                Player player = new Player();
+                //// Skriv ut lista på valbara färger.
                 for (int j = 0; j < pieceColors.Count; j++)
                 {
                     Console.WriteLine($"[{j + 1}]: " + pieceColors[j]);
                 }
                 // Val av färg.
-                Console.Write("Välj färg att spela med: ");
+                Console.Write($"Spelare {i + 1} välj färg att spela med: ");
                 var index = int.Parse(Console.ReadLine());
 
                 // Tilldela startpostitioner till pjäser.                
                 // Lägger till 4 pjäser per färg.
-                for (int m = 1, k = 0; m < 42; m += 10, k++)
+                for (int k = 0; k < 4; k++)
                 {
-                    ConsoleColor color = pieceColors[k];
-                    pieceColors.RemoveAt(k);
-                    pieces.Add(new Piece(color, k, m), 0);
+                    PieceColor color = pieceColors[index - 1];
+                    Piece piece = new Piece(color, k + 1, 0);
+                    player.pieces.Add(piece);
+                }
+                pieceColors.RemoveAt(index - 1);
+                players.Add(player);
+            }
+
+            Game game = new Game(players);
+
+            // För varje spelare...
+            foreach (var player in game.Players)
+            {
+                // För varje pjäs...
+                foreach (var piece in player.pieces)
+                {
+                    Console.WriteLine(piece.Color + " " + piece.Number + " " + piece.GetPosition());
                 }
             }
+
+            Console.ReadKey();
+            /*for (...)
+            {
+            }*/
         }        
     }
 }
