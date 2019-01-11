@@ -1,9 +1,13 @@
+#Header 1
 Ange antal spelare (2-4).
-Kunna välja färg.
-Slå en tärning (1-6).
-Får starta om slår 1 eller 6.
-Om man kommer på samma ruta så blir det knuff.
-Välja vilken pjäs man skall gå med.
-Kunna se positionen på samtliga pjäser.
-Kommer i mål om man gått 45 steg.
-Måste gå jämt ut.
+FÃ¶rsta spelaren ska kunna vÃ¤lja fÃ¤rg, en av fyra.
+NÃ¤sta spelare ska kunna vÃ¤lja fÃ¤rg, en av kvarvarande tre, o.s.v.
+I turordning slÃ¥r varje spelare en tÃ¤rning (1-6).
+Kunna se positionen pÃ¥ samtliga pjÃ¤ser.
+Spelaren fÃ¥r vÃ¤lja pjÃ¤s om slaget Ã¤r 1 eller 6.
+Om man kommer pÃ¥ samma ruta sÃ¥ blir det knuff.
+Kommer i mÃ¥l om man gÃ¥tt 45 steg.
+MÃ¥ste gÃ¥ jÃ¤mt ut.
+
+
+It's very easy to make some words **bold** and other words *italic* with Markdown. You can even [link to Google!](http://google.com)
