@@ -1,4 +1,4 @@
-# User stories
+﻿# User stories
 
 - Som användare vill jag kunna ange antal spelare, *2-4* st.
 - Första spelaren ska kunna välja färg, en av fyra.
@@ -11,5 +11,6 @@
 - Den utslagna pjäsen placeras i sin spelares bo.
 - En pjäs går i mål när spelaren flyttat den **45 steg**.
 - Den spelare som först får alla sina pjäser i mål har vunnit spelet.
+- Som användare ska jag kunna spara ett spel till en fil och återuppta det genom inläsning av filen.
 
 
