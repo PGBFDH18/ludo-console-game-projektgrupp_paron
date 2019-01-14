@@ -21,12 +21,13 @@ namespace LudoGame
         public static void ListPieces()
         {
             // För varje spelare...
+            Console.WriteLine("Piece, Position, AbsolutePosition");
             foreach (var player in Game.Players)
             {
                 // För varje pjäs i spelare...
                 foreach (var piece in player.Pieces)
                 {
-                    Console.WriteLine(piece + " " + piece.GetPosition());
+                    Console.WriteLine($"{piece}, {piece.GetPosition()}, {piece.GetAbsolutePosition()}");
                 }
             }
         }
@@ -47,7 +48,7 @@ namespace LudoGame
             bool checker = true;
             while (checker)
             {
-                Console.WriteLine("Hur många spelare skall spela? (2-4)");
+                Console.Write("Hur många spelare skall spela? (2-4): ");
                 numberOfPlayers = int.Parse(Console.ReadLine());
 
                 if (numberOfPlayers > 1 && numberOfPlayers < 5)
@@ -70,9 +71,12 @@ namespace LudoGame
                 {
                     Console.WriteLine($"[{j + 1}]: " + pieceColors[j]);
                 }
+                Console.WriteLine();
+
                 // Val av färg.
                 Console.Write($"Spelare {i + 1} välj färg att spela med: ");
                 var index = int.Parse(Console.ReadLine());
+                Console.Clear();
 
                 // Tilldela startpostitioner till pjäser.                
                 // Lägger till 4 pjäser per färg.
@@ -92,20 +96,24 @@ namespace LudoGame
         public static void PlayerTurn(Player player)
         {
             Console.Clear();
-            Console.WriteLine(player + ", tryck på en tangent för att kasta tärningen");
+            Console.WriteLine(player + ", tryck på en tangent för att kasta tärningen...");
             Console.ReadKey();
             int steps = Dice.Roll();
             Console.WriteLine("Tärningskastet visade: " + steps);
+            Console.WriteLine();
             Console.WriteLine("Pjäsernas nuvarande placering:");
             ListPieces();
+            Console.WriteLine();
             Console.WriteLine("Vilken pjäs vill du flytta?");
 
             // Indexerad lista med endast nuvarande spelares pjäser.
             for (int i = 0; i < player.Pieces.Count; i++)
             {
-                Console.WriteLine($"[{i + 1}]: {player.Pieces[i]} {player.Pieces[i].GetPosition()}");
+                Console.WriteLine($"[{i + 1}]: {player.Pieces[i]}, {player.Pieces[i].GetPosition()}, {player.Pieces[i].GetAbsolutePosition()}");
             }
+            Console.WriteLine();
             // Spelaren väljer här vilken pjäs som ska flyttas från utifrån listan.
+            Console.Write("Mata in index: ");
             int choice = int.Parse(Console.ReadLine()); // Behöver felhantering.
             Piece piece = player.Pieces[choice - 1];    // Behöver felhantering.
 
@@ -123,7 +131,7 @@ namespace LudoGame
             }
             else
             {
-                Console.WriteLine("Du måste slå antingen 1 eller 6 för att flytta ut ur boet!");
+                Console.WriteLine($"Du måste slå antingen 1 eller 6 för att flytta ut {piece} ur boet!");
             }
 
             foreach (var opponent in Game.Players)
@@ -132,7 +140,7 @@ namespace LudoGame
                 {
                     // För att göra det tydligare.
                     Piece myPiece = piece;
-                    if (Game.IsOnOpponentPosition(myPiece, opponentPiece) && myPiece.GetPosition() != 0)
+                    if (myPiece.IsOnOpponentPosition(opponentPiece) && myPiece.GetPosition() != 0 && opponentPiece.GetPosition() <= 40)
                     {
                         opponentPiece.Home();
                         Console.WriteLine(myPiece + " knuffade ut " + opponentPiece + "!");
@@ -159,6 +167,7 @@ namespace LudoGame
             GameOver = false;
             while (!GameOver)
             {
+                // För att undvika användandet av break.
                 for (int i = 0; i < Game.Players.Count && !GameOver; i++)
                 {
                     PlayerTurn(Game.Players[i]);

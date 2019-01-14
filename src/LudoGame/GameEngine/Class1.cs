@@ -12,16 +12,6 @@ namespace GameEngine
         {
             Players = players;
         }
-
-        public List<Piece> GetPieces()
-        {
-            throw new NotImplementedException(); // <- Tas bort!
-        }
-
-        // Metod som avgör om spelarens pjäs har samma position som motståndarens position med hänsyn till korrigeringsfaktorn.
-        public static bool IsOnOpponentPosition(Piece myPiece, Piece opponentPiece) =>
-            myPiece.GetAbsolutePosition() == opponentPiece.GetAbsolutePosition() && opponentPiece != myPiece;
-
     }
 
     public class Player
@@ -60,7 +50,7 @@ namespace GameEngine
             this.correctionFactor = correctionFactor;
         }
 
-        // Flytta pjäsen x antal steg.
+        // Flytta pjäsen 'steps' antal steg.
         public void Move(int steps) => position += steps;
 
         // Hämta pjäsens "lokala position".
@@ -68,9 +58,9 @@ namespace GameEngine
 
         // Hämta pjäsens "globala position".
         public int GetAbsolutePosition() => 
-            position + correctionFactor > 40 ? // IF
-            position + correctionFactor - 40 : // THEN
-            position + correctionFactor; // ELSE
+            position + correctionFactor > 40 ?  // IF
+            position + correctionFactor - 40 :  // THEN
+            position + correctionFactor;        // ELSE
 
         public void Home() => position = 0;
         
@@ -78,6 +68,15 @@ namespace GameEngine
 
         public bool InGoal() => position >= 45;
 
+        // Ersatts av instansvariabeln. Överge?
+        public static bool IsOnOpponentPosition(Piece myPiece, Piece opponentPiece) =>
+            myPiece.GetAbsolutePosition() == opponentPiece.GetAbsolutePosition() && opponentPiece != myPiece;
+
+        // Metod som avgör om spelarens pjäs har samma position som motståndarens position med hänsyn till korrigeringsfaktorn.
+        public bool IsOnOpponentPosition(Piece opponentPiece) =>
+            GetAbsolutePosition() == opponentPiece.GetAbsolutePosition() && this != opponentPiece;
+
+        // Exempelresultat: 'R3' om pjäsen är Röd och har siffra 3.
         public override string ToString() => $"{Color.ToString()[0]}{Number}";
     }
 
