@@ -6,9 +6,11 @@
 - Innan spelat påbörjas, är alla spelares pjäser placerade i sina bon.
 - I turordning slår varje spelare en tärning *(1-6)*.
 - Som spelare vill jag kunna se positionen på samtliga pjäser.
-- Som spelare vill jag kunna välja någon av mina pjäser om första tärningsslaget är *1* eller *6*.
-- Om min pjäs hamnar på samma position som någon av de andra spelarnas pjäser kommer jag knuffa ut den andra pjäsen.
+- Om en spelare slår *1* eller *6* med tärningen får hen välja att gå ut med en pjäs från boet.
+- Som spelare vill jag kunna välja vilken av mina pjäser jag vill flytta.
+- Om min pjäs hamnar på samma position som någon av de andra spelarnas pjäser kommer jag knuffa ut den andra pjäsen ("knuff").
 - Den utslagna pjäsen placeras i sin spelares bo.
+- På ruta **41-45** kan man inte bli "knuffad".
 - En pjäs går i mål när spelaren flyttat den **45 steg**.
 - Den spelare som först får alla sina pjäser i mål har vunnit spelet.
 - Som användare ska jag kunna spara ett spel till en fil och återuppta det genom inläsning av filen.
