@@ -45,7 +45,7 @@ namespace LudoGame
                 {
                     PieceColor color = pieceColors[index - 1];
                     Piece piece = new Piece(color, k + 1, 0);
-                    player.pieces.Add(piece);
+                    player.Pieces.Add(piece);
                 }
                 pieceColors.RemoveAt(index - 1);
                 players.Add(player);
@@ -57,7 +57,7 @@ namespace LudoGame
             foreach (var player in game.Players)
             {
                 // För varje pjäs...
-                foreach (var piece in player.pieces)
+                foreach (var piece in player.Pieces)
                 {
                     Console.WriteLine(piece.Color + " " + piece.Number + " " + piece.GetPosition());
                 }

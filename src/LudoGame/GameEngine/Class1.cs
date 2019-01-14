@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace GameEngine
 {
-
     public class Game
     {
+        // Deltagarna ligger här!
         public List<Player> Players { get; set; }
 
         public Game(List<Player> players)
@@ -18,36 +18,25 @@ namespace GameEngine
             /*
             Om "Piece isHOME = TRUE" , ta inte med correction factor.
             Om FALSE, beräkna med correction factor.
-            
-
-
-            Player player = new Player();
-            Player player2 = player;
-            player2.CorrecFactor(4);
-
-            int number = 5;
-            int numer2 = number;
-            numer2 = 10;
             */
         }
 
         public List<Piece> GetPieces()
         {
-            //Players[x].pieces[y]
-            return null;
+            throw new NotImplementedException(); // <- Tas bort!
         }
 
-
+        // Metod som räknar ut pjäsens position med hänsyn till korrigeringsfaktorn.
     }
 
     public class Player
     {
-        public int correctionFactor { get; }
-        public List<Piece> pieces { get; set; }
+        // Spelarens pjäser ligger här!
+        public List<Piece> Pieces { get; set; }
 
         public Player()
         {
-            pieces = new List<Piece>(4);
+            Pieces = new List<Piece>(4);
         }
     }
 
@@ -60,18 +49,25 @@ namespace GameEngine
     {
         public PieceColor Color { get; set; }
         public int Number { get; set; }
+        public int correctionFactor { get; set; }
         private int position;
 
-        public Piece(PieceColor color, int number, int position)
+        public Piece(PieceColor color, int number, int position/*, int correctionFactor*/)
         {
             Color = color;
-            this.Number = number;
+            Number = number;
             this.position = position;
+            //this.correctionFactor = correctionFactor;
         }
 
-        public void Move(int i) => position += i;
+        // Flytta pjäsen x antal steg.
+        public void Move(int steps) => position += steps;
 
+        // Hämta pjäsens "lokala position".
         public int GetPosition() => position;
+
+        // Hämta pjäsens "globala position".
+        public int GetAbsolutePosition() => position + correctionFactor;
     }
 
     public class Dice
