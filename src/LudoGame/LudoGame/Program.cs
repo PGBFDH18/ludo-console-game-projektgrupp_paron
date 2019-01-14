@@ -7,11 +7,11 @@ namespace LudoGame
 {
     class Program
     {
+        public static Game game;
+
         static void Main(string[] args)
         {
-            //game.players[x].pieces[x].Move();
-
-
+            #region
             // Lista med valbara färger.
             var pieceColors = new List<PieceColor>
             {
@@ -51,7 +51,7 @@ namespace LudoGame
                 players.Add(player);
             }
 
-            Game game = new Game(players);
+            game = new Game(players);
 
             // För varje spelare...
             foreach (var player in game.Players)
@@ -62,11 +62,40 @@ namespace LudoGame
                     Console.WriteLine(piece.Color + " " + piece.Number + " " + piece.GetPosition());
                 }
             }
+            #endregion
+
+            foreach (var player in game.Players)
+            {
+                PlayerTurn(player);
+            }
+
 
             Console.ReadKey();
-            /*for (...)
-            {
-            }*/
-        }        
+        }   
+        
+        public static void ListPieces()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void GameSetup()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void PlayerTurn(Player player)
+        {
+            //// Presentera var alla pjäsers position.
+
+            //// tryck på en knapp för att kasta tärningen.
+            //int dice = Dice.Roll();
+            //// presentera värdet på dice.
+
+
+
+            //// Välj vilken pjäs som ska flyttas.
+
+            //player.Pieces[x] == 0 AND dice == 1 OR dice == 6
+        }
     }
 }
