@@ -2,16 +2,37 @@
 using System.Drawing;
 using System;
 using GameEngine;
+using System.Linq;
 
 namespace LudoGame
 {
     class Program
     {
-        public static Game game;
+        public static Game Game;
+        public static int numberOfPlayers;
+        public static bool GameOver;
 
         static void Main(string[] args)
         {
-            #region
+            GameSetup();
+            BeginGame();
+        }   
+        
+        public static void ListPieces()
+        {
+            // För varje spelare...
+            foreach (var player in Game.Players)
+            {
+                // För varje pjäs i spelare...
+                foreach (var piece in player.Pieces)
+                {
+                    Console.WriteLine(piece + " " + piece.GetPosition());
+                }
+            }
+        }
+
+        public static void GameSetup()
+        {
             // Lista med valbara färger.
             var pieceColors = new List<PieceColor>
             {
@@ -21,15 +42,29 @@ namespace LudoGame
                 PieceColor.Green
             };
 
-            // Game setup.
             Console.WriteLine("Välkommen till PäronLudo!");
-            Console.WriteLine("Hur många spelare skall spela? (2-4)");
-            int numberOfPlayers = int.Parse(Console.ReadLine());
+
+            bool checker = true;
+            while (checker)
+            {
+                Console.WriteLine("Hur många spelare skall spela? (2-4)");
+                numberOfPlayers = int.Parse(Console.ReadLine());
+
+                if (numberOfPlayers > 1 && numberOfPlayers < 5)
+                {
+                    checker = false;
+                }
+                else
+                {
+                    Console.WriteLine("Du måste ange 2-4 spelare!");
+                }
+            }
+
             List<Player> players = new List<Player>(4);
 
-            for (int i = 0; i < numberOfPlayers; i++)
+            for (int i = 0, correctionFactor = 0; i < numberOfPlayers; i++, correctionFactor += 10)
             {
-                Player player = new Player();
+                Player player = new Player(i + 1);
                 //// Skriv ut lista på valbara färger.
                 for (int j = 0; j < pieceColors.Count; j++)
                 {
@@ -44,58 +79,91 @@ namespace LudoGame
                 for (int k = 0; k < 4; k++)
                 {
                     PieceColor color = pieceColors[index - 1];
-                    Piece piece = new Piece(color, k + 1, 0);
+                    Piece piece = new Piece(color, k + 1, 0, correctionFactor);
                     player.Pieces.Add(piece);
                 }
                 pieceColors.RemoveAt(index - 1);
                 players.Add(player);
             }
 
-            game = new Game(players);
-
-            // För varje spelare...
-            foreach (var player in game.Players)
-            {
-                // För varje pjäs...
-                foreach (var piece in player.Pieces)
-                {
-                    Console.WriteLine(piece.Color + " " + piece.Number + " " + piece.GetPosition());
-                }
-            }
-            #endregion
-
-            foreach (var player in game.Players)
-            {
-                PlayerTurn(player);
-            }
-
-
-            Console.ReadKey();
-        }   
-        
-        public static void ListPieces()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void GameSetup()
-        {
-            throw new NotImplementedException();
+            Game = new Game(players);
         }
 
         public static void PlayerTurn(Player player)
         {
-            //// Presentera var alla pjäsers position.
+            Console.Clear();
+            Console.WriteLine(player + ", tryck på en tangent för att kasta tärningen");
+            Console.ReadKey();
+            int steps = Dice.Roll();
+            Console.WriteLine("Tärningskastet visade: " + steps);
+            Console.WriteLine("Pjäsernas nuvarande placering:");
+            ListPieces();
+            Console.WriteLine("Vilken pjäs vill du flytta?");
 
-            //// tryck på en knapp för att kasta tärningen.
-            //int dice = Dice.Roll();
-            //// presentera värdet på dice.
+            // Indexerad lista med endast nuvarande spelares pjäser.
+            for (int i = 0; i < player.Pieces.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]: {player.Pieces[i]} {player.Pieces[i].GetPosition()}");
+            }
+            // Spelaren väljer här vilken pjäs som ska flyttas från utifrån listan.
+            int choice = int.Parse(Console.ReadLine()); // Behöver felhantering.
+            Piece piece = player.Pieces[choice - 1];    // Behöver felhantering.
 
+            // Kontrollerar om pjäsen är inne i boet och tärningslagen är 1 eller 6.
+            if (piece.IsHome() && steps == 1 || steps == 6)
+            {
+                piece.Move(steps);
+                Console.WriteLine($"{piece} flyttade {steps} steg.");
+            }
+            // Kollar att pjäsen är ute ur boet.
+            else if (piece.GetPosition() > 0)
+            {
+                piece.Move(steps);
+                Console.WriteLine($"{piece} flyttade {steps} steg.");
+            }
+            else
+            {
+                Console.WriteLine("Du måste slå antingen 1 eller 6 för att flytta ut ur boet!");
+            }
 
+            foreach (var opponent in Game.Players)
+            {
+                foreach (var opponentPiece in opponent.Pieces)
+                {
+                    // För att göra det tydligare.
+                    Piece myPiece = piece;
+                    if (Game.IsOnOpponentPosition(myPiece, opponentPiece) && myPiece.GetPosition() != 0)
+                    {
+                        opponentPiece.Home();
+                        Console.WriteLine(myPiece + " knuffade ut " + opponentPiece + "!");
+                    }
+                }
+            }
 
-            //// Välj vilken pjäs som ska flyttas.
+            if (piece.InGoal())
+            {
+                player.Pieces.RemoveAt(choice - 1);
+                if (player.Pieces.Count <= 0)
+                {
+                    GameOver = true;
+                    Console.WriteLine(player + " har vunnit!");
+                }
+                Console.WriteLine("Pjäsen har nått mål!");
+            }
 
-            //player.Pieces[x] == 0 AND dice == 1 OR dice == 6
+            Console.ReadKey();
+        }
+
+        public static void BeginGame()
+        {
+            GameOver = false;
+            while (!GameOver)
+            {
+                for (int i = 0; i < Game.Players.Count && !GameOver; i++)
+                {
+                    PlayerTurn(Game.Players[i]);
+                }
+            }
         }
     }
 }

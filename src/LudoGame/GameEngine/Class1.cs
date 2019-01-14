@@ -10,15 +10,7 @@ namespace GameEngine
 
         public Game(List<Player> players)
         {
-            Players = new List<Player>(4); // <- Betyder max 4.
             Players = players;
-            
-            
-            //Pseudokod för presentation av pjäsernas positioner.
-            /*
-            Om "Piece isHOME = TRUE" , ta inte med correction factor.
-            Om FALSE, beräkna med correction factor.
-            */
         }
 
         public List<Piece> GetPieces()
@@ -26,18 +18,26 @@ namespace GameEngine
             throw new NotImplementedException(); // <- Tas bort!
         }
 
-        // Metod som räknar ut pjäsens position med hänsyn till korrigeringsfaktorn.
+        // Metod som avgör om spelarens pjäs har samma position som motståndarens position med hänsyn till korrigeringsfaktorn.
+        public static bool IsOnOpponentPosition(Piece myPiece, Piece opponentPiece) =>
+            myPiece.GetAbsolutePosition() == opponentPiece.GetAbsolutePosition() && opponentPiece != myPiece;
+
     }
 
     public class Player
     {
         // Spelarens pjäser ligger här!
         public List<Piece> Pieces { get; set; }
+        private int number;
 
-        public Player()
+        public Player(int number)
         {
             Pieces = new List<Piece>(4);
+            this.number = number;
         }
+
+        public override string ToString() => $"Spelare {number}";
+
     }
 
     public enum PieceColor
@@ -52,12 +52,12 @@ namespace GameEngine
         public int correctionFactor { get; set; }
         private int position;
 
-        public Piece(PieceColor color, int number, int position/*, int correctionFactor*/)
+        public Piece(PieceColor color, int number, int position, int correctionFactor)
         {
             Color = color;
             Number = number;
             this.position = position;
-            //this.correctionFactor = correctionFactor;
+            this.correctionFactor = correctionFactor;
         }
 
         // Flytta pjäsen x antal steg.
@@ -67,12 +67,23 @@ namespace GameEngine
         public int GetPosition() => position;
 
         // Hämta pjäsens "globala position".
-        public int GetAbsolutePosition() => position + correctionFactor;
+        public int GetAbsolutePosition() => 
+            position + correctionFactor > 40 ? // IF
+            position + correctionFactor - 40 : // THEN
+            position + correctionFactor; // ELSE
+
+        public void Home() => position = 0;
+        
+        public bool IsHome() => position == 0;
+
+        public bool InGoal() => position >= 45;
+
+        public override string ToString() => $"{Color.ToString()[0]}{Number}";
     }
 
     public class Dice
     {
-        public int Roll()
+        public static int Roll()
         {
             return new Random().Next(1, 7);
         }
