@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace GameEngine
 {
-    /// <summary>
-    /// Represents the player's piece.
-    /// </summary>
     public class Piece
     {
         public enum PieceColor
@@ -17,13 +16,6 @@ namespace GameEngine
         public int correctionFactor { get; set; }
         private int position;
 
-        /// <summary>
-        /// Initialises a new instance of Piece.
-        /// </summary>
-        /// <param name="color">First identity.</param>
-        /// <param name="number">Second identity.</param>
-        /// <param name="position">Assigns local default position to piece.</param>
-        /// <param name="correctionFactor">Integer which is taken into account when calculating the piece's global position.</param>
         public Piece(PieceColor color, int number, int position, int correctionFactor)
         {
             Color = color;
@@ -39,15 +31,10 @@ namespace GameEngine
         public int GetPosition() => position;
 
         // Hämta pjäsens "globala position".
-        public int GetAbsolutePosition()
-        {
-            if (position + correctionFactor > 40)
-                return position + correctionFactor - 40;
-            else if (position is 0)
-                return 0;
-            else
-                return position + correctionFactor;
-        }
+        public int GetAbsolutePosition() =>
+            position + correctionFactor > 40 ?  // IF
+            position + correctionFactor - 40 :  // THEN
+            position + correctionFactor;        // ELSE
 
         public void Home() => position = 0;
 
