@@ -4,7 +4,10 @@ using System.Text;
 
 namespace GameEngine
 {
-    public class Dice
+    /// <summary>
+    /// Used for randomizing any integer of a six-sided dice. This class cannot be derived from.
+    /// </summary>
+    public sealed class Dice
     {
         public static int Roll()
         {

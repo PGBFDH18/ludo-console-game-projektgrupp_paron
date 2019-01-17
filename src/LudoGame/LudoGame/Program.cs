@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System;
 using GameEngine;
-using System.Linq;
 
 namespace LudoGame
 {
@@ -16,9 +14,9 @@ namespace LudoGame
         {
             GameSetup();
             BeginGame();
-        }   
-        
-        public static void ListPieces()
+        }
+
+        public static void ListAllPieces()
         {
             // För varje spelare...
             Console.WriteLine("Piece, Position, AbsolutePosition");
@@ -32,9 +30,19 @@ namespace LudoGame
             }
         }
 
+        public static void ListPlayerPieces(Player player)
+        {
+            // Indexerad lista med endast nuvarande spelares pjäser.
+            for (int i = 0; i < player.Pieces.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}]: {player.Pieces[i]}, {player.Pieces[i].GetPosition()}, {player.Pieces[i].GetAbsolutePosition()}");
+            }
+            Console.WriteLine();
+        }
+
         public static void GameSetup()
         {
-            
+
             // Lista med valbara färger.
             var pieceColors = new List<Piece.PieceColor>
             {
@@ -103,20 +111,18 @@ namespace LudoGame
             Console.WriteLine("Tärningskastet visade: " + steps);
             Console.WriteLine();
             Console.WriteLine("Pjäsernas nuvarande placering:");
-            ListPieces();
+            ListAllPieces();
             Console.WriteLine();
             Console.WriteLine("Vilken pjäs vill du flytta?");
 
             // Indexerad lista med endast nuvarande spelares pjäser.
-            for (int i = 0; i < player.Pieces.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}]: {player.Pieces[i]}, {player.Pieces[i].GetPosition()}, {player.Pieces[i].GetAbsolutePosition()}");
-            }
-            Console.WriteLine();
+            ListPlayerPieces(player);
+
             // Spelaren väljer här vilken pjäs som ska flyttas från utifrån listan.
             Console.Write("Mata in index: ");
             int choice = int.Parse(Console.ReadLine()); // Behöver felhantering.
             Piece piece = player.Pieces[choice - 1];    // Behöver felhantering.
+            Console.Clear();
 
             // Kontrollerar om pjäsen är inne i boet och tärningslagen är 1 eller 6.
             if (piece.IsHome() && steps == 1 || steps == 6)
