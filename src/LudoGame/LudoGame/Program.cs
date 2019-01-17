@@ -34,13 +34,14 @@ namespace LudoGame
 
         public static void GameSetup()
         {
+            
             // Lista med valbara färger.
-            var pieceColors = new List<PieceColor>
+            var pieceColors = new List<Piece.PieceColor>
             {
-                PieceColor.Red,
-                PieceColor.Blue,
-                PieceColor.Yellow,
-                PieceColor.Green
+                Piece.PieceColor.Red,
+                Piece.PieceColor.Blue,
+                Piece.PieceColor.Yellow,
+                Piece.PieceColor.Green
             };
 
             Console.WriteLine("Välkommen till PäronLudo!");
@@ -82,7 +83,7 @@ namespace LudoGame
                 // Lägger till 4 pjäser per färg.
                 for (int k = 0; k < 4; k++)
                 {
-                    PieceColor color = pieceColors[index - 1];
+                    Piece.PieceColor color = pieceColors[index - 1];
                     Piece piece = new Piece(color, k + 1, 0, correctionFactor);
                     player.Pieces.Add(piece);
                 }

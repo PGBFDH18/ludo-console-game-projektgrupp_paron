@@ -1,42 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GameEngine
 {
-    public class Game
-    {
-        // Deltagarna ligger här!
-        public List<Player> Players { get; set; }
-
-        public Game(List<Player> players)
-        {
-            Players = players;
-        }
-    }
-
-    public class Player
-    {
-        // Spelarens pjäser ligger här!
-        public List<Piece> Pieces { get; set; }
-        private int number;
-
-        public Player(int number)
-        {
-            Pieces = new List<Piece>(4);
-            this.number = number;
-        }
-
-        public override string ToString() => $"Spelare {number}";
-
-    }
-
-    public enum PieceColor
-    {
-        Red, Blue, Yellow, Green
-    }
-
     public class Piece
     {
+        public enum PieceColor
+        {
+            Red, Blue, Yellow, Green
+        }
+
         public PieceColor Color { get; set; }
         public int Number { get; set; }
         public int correctionFactor { get; set; }
@@ -57,13 +31,13 @@ namespace GameEngine
         public int GetPosition() => position;
 
         // Hämta pjäsens "globala position".
-        public int GetAbsolutePosition() => 
+        public int GetAbsolutePosition() =>
             position + correctionFactor > 40 ?  // IF
             position + correctionFactor - 40 :  // THEN
             position + correctionFactor;        // ELSE
 
         public void Home() => position = 0;
-        
+
         public bool IsHome() => position == 0;
 
         public bool InGoal() => position >= 45;
@@ -78,13 +52,5 @@ namespace GameEngine
 
         // Exempelresultat: 'R3' om pjäsen är Röd och har siffra 3.
         public override string ToString() => $"{Color.ToString()[0]}{Number}";
-    }
-
-    public class Dice
-    {
-        public static int Roll()
-        {
-            return new Random().Next(1, 7);
-        }
     }
 }
