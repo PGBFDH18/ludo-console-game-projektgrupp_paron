@@ -6,10 +6,13 @@ namespace LudoGame
 {
     class Program
     {
+        private static string databaseConnectionString = 
+            "Data Source=den1.mssql8.gear.host;Initial Catalog=appleludo;Persist Security Info=True;User ID=appleludo;Password=***********";
+
         public static Game Game;
         public static int numberOfPlayers;
         public static bool GameOver;
-
+        
         static void Main(string[] args)
         {
             GameSetup();
@@ -42,7 +45,6 @@ namespace LudoGame
 
         public static void GameSetup()
         {
-
             // Lista med valbara färger.
             var pieceColors = new List<Piece.PieceColor>
             {
@@ -99,7 +101,7 @@ namespace LudoGame
                 players.Add(player);
             }
 
-            Game = new Game(players);
+            Game = new Game(players, databaseConnectionString);
         }
 
         public static void PlayerTurn(Player player)
