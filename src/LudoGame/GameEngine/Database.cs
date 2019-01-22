@@ -10,7 +10,7 @@ namespace GameEngine
     /// <summary>
     /// Store game state on database.
     /// </summary>
-    public class Database : IProvider
+    public class Database : ILoadSave
     {
         public SqlConnection Connection { get; set; }
         
